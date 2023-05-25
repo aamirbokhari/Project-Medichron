@@ -7,6 +7,12 @@ import pyzbar.pyzbar as pyzbar
 import qrcode
 from io import BytesIO
 import os
+import tensorflow as tf
+from PIL import Image
+import numpy as np
+from keras.utils import normalize
+from werkzeug.utils import secure_filename
+
 # using those forms created here in our application
 app = Flask(__name__)
 
@@ -14,6 +20,13 @@ app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 df = pd.read_csv('nameListDoc.csv')
 
+model = tf.keras.models.load_model(r"C:\Users\Aamir\Desktop\brain.h5")
+
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg',"bmp"}
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @app.route('/')
 @app.route('/index')
@@ -338,6 +351,47 @@ def x():
 
     return render_template('contact.html',errors=errors)
 
+class_labels = ['glioma_tumor','meningioma_tumor','no_tumor','pituitary_tumor']
+image_size = (150, 150)
+
+@app.route('/predict', methods=['POST','GET'])
+def predict():
+    # Check if an image was uploaded
+    if 'file' not in request.files:
+        return render_template('brain.html', message='No file selected')
+
+    file = request.files['file']
+
+
+    # Check if the file is allowed
+    if file and allowed_file(file.filename):
+    
+
+        
+        # Read and preprocess the image
+        img = Image.open(file)
+        if img.mode != "RGB":
+            img = img.convert("RGB")
+        img = img.resize(image_size)
+        img = np.expand_dims(img,axis=0)
+
+        prediction = model.predict(img)
+        predicted_index = np.argmax(prediction)
+        
+        if predicted_index==0:
+            predicted_label="Glioma Tumour"
+        elif predicted_index==1:
+            predicted_label="Meningioma Tumour"
+        elif predicted_index==2:
+            predicted_label="No Tumour"
+        else:
+            predicted_label="Pitutary Tumour"
+
+
+
+        return render_template('brain.html', prediction=predicted_label)
+    else:
+        return render_template('brain.html', message='Invalid file type')
 
     
 

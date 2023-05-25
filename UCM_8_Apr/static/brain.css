@@ -1,0 +1,53 @@
+body{
+    background-image:url("liquid-blue-white-gradient-blurred-abstract-background_619119-322.jpg");
+        
+    background-repeat: no-rep'liquid-blue-white-gradient-blurred-abstract-background_619119-322.jpg'eat;
+    background-size: cover;
+}
+
+h1{
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    font-size: xx-large;
+    text-align: center;
+    font-weight: bolder;
+    text-decoration: underline;
+    color: rgb(7, 7, 7);
+}
+
+.brain{
+
+    margin-top: 80px;
+    text-align: center;
+    margin-left: 1%;
+}
+
+input[type="file"]{
+
+    margin-left: 100px;
+    font-size: x-large;
+    border-radius: 10px;
+}
+
+
+
+input[type="submit"]{
+
+    font-size: x-large;
+    border-radius: 10px;
+    background-color:rgb(49, 150, 232);
+    
+
+}
+
+h2{
+margin-top: 5%;
+    text-align: center;
+    font-size: 50px;
+    color: rgb(1, 50, 92);
+     
+}
+p{
+    text-align: center;
+    font-size: 30px;
+    color: rgb(1, 50, 92);
+}
